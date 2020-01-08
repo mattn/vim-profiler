@@ -77,6 +77,8 @@ class StartupData(object):
         self.log_filename = log_filename
         self.times = dict()
         self.system_dirs = ["/usr", "/usr/local"]
+        if os.name == 'nt':
+            self.system_dirs = []
         self.generate(check_system)
 
     def generate(self, check_system=False):
@@ -122,7 +124,7 @@ class StartupData(object):
         # Load log file and process it
         print("Loading and processing logs...", end="")
         with open(self.log_filename, 'r') as log:
-            log_txt = log.read()
+            log_txt = log.read().replace("\\", "/")
             plugin_dir = ""
 
             # Try to guess the folder based on the logs themselves
